@@ -1,4 +1,5 @@
 
+import { todo } from "node:test";
 import { useState } from "react"
 
 
@@ -51,6 +52,8 @@ function App() {
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     )))
   }
+
+
 
 
   return (
@@ -111,6 +114,8 @@ function App() {
 
 
               <h3>  {todo.text} </h3>
+
+              <button onClick={() => deleteTodo(todo.id)} className="text-red-500 border border-rose-600 rounded-full px-2 cursor-pointer hover:bg-rose-200"> ❌ </button>
             </div>
           ))
         }
