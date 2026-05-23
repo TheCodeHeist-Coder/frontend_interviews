@@ -1,122 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+
+import { useState } from "react"
+
+
+type Filter = "all" | "active" | "completed";
+
+type Priority = "low" | "medium" | "high";
+
+interface Todo {
+  id: number;
+  text: string;
+  completed: boolean;
+  priority: Priority;
+  createdAt: Date;
+}
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [inputText, setInputText] = useState<string>('');
+  const [inputPriority, setInputPriority] = useState<Priority>("medium")
+
+  const [todos, setTodos] = useState<Todo[]>([
+    { id: 1, text: "Go to Gym", completed: false, priority: "medium", createdAt: new Date() },
+    { id: 2, text: "Take a selfie", completed: false, priority: "low", createdAt: new Date() },
+
+  ])
+
+  // to count the completed todos
+  const completedCount = todos.filter((todo) => todo.completed).length;
+
+  const addTodo = () => {
+    const trimmed = inputText.trim();
+
+    if (!trimmed) return alert("Input is required");
+
+    setTodos([
+      ...todos,
+      { id: Date.now(), text: trimmed, completed: false, priority: inputPriority, createdAt: new Date() }
+    ]);
+
+    setInputText("");
+    setInputPriority("medium");
+
+  }
+
+
+  const toggleCompleted = (id: number) => {
+    setTodos(todos.map((todo) => (
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    )))
+  }
+
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div>
 
-      <div className="ticks"></div>
+      <h1 className="text-center font-extrabold py-5 text-2xl"> Interview Question - 01 (Todo List) </h1>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <div className="flex items-center justify-center gap-3 w-full h-32">
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+          placeholder="Add new task..."
+          onKeyDown={(e) => e.key === "Enter" && addTodo()}
+          className="border border-amber-600 py-1 px-4 rounded-lg outline-none"
+        />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        <button className="bg-amber-800 py-1 px-4 rounded-lg cursor-pointer active:scale-95" onClick={addTodo}> Add todo </button>
+      </div>
+
+
+      {/* header */}
+      <div className="flex items-center justify-center w-full h-12">
+        <h2 className="text-rose-700 font-bold text-md"> {completedCount} todos completed out of {todos.length}  </h2>
+      </div>
+
+      {/* todos listing */}
+
+      <div className="flex mt-12 max-w-160 flex-wrap m-auto justify-center items-center gap-12 w-full">
+
+        {
+          todos.map((todo) => (
+            <div className="font-extrabold" key={todo.id}>
+
+              <button
+                onClick={() => toggleCompleted(todo.id)}
+                title={todo.completed ? "Mark incomplete" : "Mark comlete"}
+                 style={{
+                  marginTop: 2,
+                  width: 20,
+                  height: 20,
+                  minWidth: 20,
+                  borderRadius: "50%",
+                  border: `2px solid ${todo.completed ? "#6366f1" : "#cbd5e1"}`,
+                  background: todo.completed ? "#6366f1" : "transparent",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {todo.completed && (
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                    <path d="M1.5 5L4 7.5L8.5 2.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                )}
+              </button>
+
+
+              <h3>  {todo.text} </h3>
+            </div>
+          ))
+        }
+
+      </div>
+
+
+    </div>
   )
+
+
 }
 
 export default App
