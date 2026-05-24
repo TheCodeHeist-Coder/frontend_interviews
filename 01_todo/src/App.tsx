@@ -59,7 +59,7 @@ function App() {
   return (
     <div>
 
-      <h1 className="text-center font-extrabold py-5 text-2xl"> Interview Question - 01 (Todo List) </h1>
+      <h1 className="text-center font-extrabold py-5 text-2xl"> Interview Question ---- 01 (Todo List) </h1>
 
       <div className="flex items-center justify-center gap-3 w-full h-32">
         <input
