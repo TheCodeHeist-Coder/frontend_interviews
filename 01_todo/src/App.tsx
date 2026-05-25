@@ -1,5 +1,6 @@
 
-import { todo } from "node:test";
+
+
 import { useState } from "react"
 
 
@@ -54,6 +55,12 @@ function App() {
   }
 
 
+  // delete todo
+  const deleteTodo = (id:number) => {
+    setTodos(todos.filter((todo) => todo.id !== id))
+  }
+
+
 
 
   return (
@@ -70,6 +77,16 @@ function App() {
           onKeyDown={(e) => e.key === "Enter" && addTodo()}
           className="border border-amber-600 py-1 px-4 rounded-lg outline-none"
         />
+
+        <select
+         value={inputPriority}
+          onChange={(e) => setInputPriority(e.target.value as Priority)}
+             style={{ border: "1px solid #e2e8f0", borderRadius: 8, padding: "8px 10px", fontSize: 13, color: "#0f172a", background: "#f8fafc", cursor: "pointer" }}
+          >
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
 
         <button className="bg-amber-800 py-1 px-4 rounded-lg cursor-pointer active:scale-95" onClick={addTodo}> Add todo </button>
       </div>
@@ -104,6 +121,8 @@ function App() {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
+
+               
               >
                 {todo.completed && (
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -113,7 +132,8 @@ function App() {
               </button>
 
 
-              <h3>  {todo.text} </h3>
+              <h3  className={`${todo.completed && 'line-through'}`}>  {todo.text} </h3>
+              <p className="text-sm text-red-800"> {todo.priority} </p>
 
               <button onClick={() => deleteTodo(todo.id)} className="text-red-500 border border-rose-600 rounded-full px-2 cursor-pointer hover:bg-rose-200"> ❌ </button>
             </div>
