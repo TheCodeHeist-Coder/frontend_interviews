@@ -1,0 +1,109 @@
+
+import { useState } from "react"
+
+interface Questions {
+    id: number,
+    question: string,
+    answer: string
+}
+
+const questions: Questions[] = [
+    {
+        id: 3458,
+        question: "What is your favorite color?",
+        answer: "Blue"
+    },
+    {
+        id: 3459,
+        question: "Which city do you live in?",
+        answer: "Mumbai"
+    },
+    {
+        id: 3460,
+        question: "What is your profession?",
+        answer: "Software Engineer"
+    },
+    {
+        id: 3461,
+        question: "What is your favorite food?",
+        answer: "Pizza"
+    },
+    {
+        id: 3462,
+        question: "Which country do you belong to?",
+        answer: "India"
+    },
+    {
+        id: 3463,
+        question: "What is your hobby?",
+        answer: "Reading books"
+    },
+    {
+        id: 3464,
+        question: "What is your pet's name?",
+        answer: "Bruno"
+    },
+    {
+        id: 3465,
+        question: "Which language do you speak?",
+        answer: "Hindi"
+    },
+    {
+        id: 3466,
+        question: "What is your dream job?",
+        answer: "Pilot"
+    },
+    {
+        id: 3467,
+        question: "What is your favorite movie?",
+        answer: "3 Idiots"
+    }
+]
+
+
+function App() {
+
+
+    return (
+        <div className="">
+            <FlashCard />
+        </div>
+    )
+
+}
+
+
+function FlashCard() {
+
+    const [selectedId, setSelectedId] = useState<number | null>(null);
+
+    function handleCards(id: number){
+        setSelectedId(id !== selectedId ? id : null);
+    }
+
+
+
+    return (
+        <div className="flex items-center justify-center">
+
+
+            <div className="flex gap-4 flex-wrap py-20 pl-30">
+                {
+                    questions.map(question =>
+                        <div key={question.id}
+                        onClick={() => handleCards(question.id)}
+                            className={`w-96 h-36  flex items-center justify-center cursor-pointer rounded-2xl ${question.id === selectedId ? "bg-red-600" : "bg-green-200"} `}>
+                            <p className="text-black font-bold"> {question.id === selectedId ? question.answer : question.question} </p>
+                        </div>)
+                }
+
+            </div>
+        </div>
+    )
+
+}
+
+
+
+
+export default App
