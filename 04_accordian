@@ -1,0 +1,79 @@
+import { useState } from "react";
+
+interface Item {
+    title: string;
+    content: string
+}
+
+const items: Item[] = [
+    {
+        title: "What is your return policy?",
+        content:
+            "We accept returns within 30 days of purchase. Items must be unused and in original packaging.",
+    },
+    {
+        title: "How long does shipping take?",
+        content:
+            "Standard shipping usually takes 5–7 business days, while express shipping takes 1–2 business days.",
+    },
+    {
+        title: "Do you offer international shipping?",
+        content:
+            "Yes, we ship to most countries worldwide. Shipping charges may vary depending on location.",
+    },
+    {
+        title: "How can I track my order?",
+        content:
+            "Once your order is shipped, you will receive a tracking link via email or SMS.",
+    },
+    {
+        title: "Can I cancel my order?",
+        content:
+            "Orders can be canceled within 24 hours of placing them before they are processed for shipping.",
+    },
+];
+
+
+
+function App() {
+
+    return (
+        <div>
+            <Accordian items={items} />
+        </div>
+    )
+
+}
+
+
+
+function Accordian({ items }: any) {
+
+    const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+    function handleOpen(index: number) {
+
+        setOpenIndex(openIndex === index ? null : index)
+
+    }
+
+
+    return (
+        <div className="w-full min-h-screen flex flex-col gap-3 items-center justify-center">
+            {items.map((item: Item, index: number) => (
+                <div key={index} className="flex  flex-col justify-center">
+                    <button onClick={() => handleOpen(index)} className="bg-gray-300 w-120 flex items-center justify-between py-3 px-4 cursor-pointer"> {item.title} 
+                        <span> {openIndex ===  index ? "-": "+"} </span>
+                         </button>
+
+                    <div className={`${openIndex === index ? "py-4 px-6 bg-gray-100" : null} max-w-120`}>
+                        {openIndex === index && item.content}
+                    </div>
+                </div>
+            ))}
+        </div>
+    )
+}
+
+
+export default App;
